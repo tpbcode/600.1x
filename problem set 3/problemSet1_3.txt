@@ -1,0 +1,14 @@
+def getAvailableLetters(lettersGuessed):
+    '''
+    lettersGuessed: list, what letters have been guessed so far
+    returns: string, comprised of letters that represents what letters have not
+      yet been guessed.
+    '''
+    multLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    for letter in lettersGuessed:
+        if letter in multLetters:
+            multLetters.remove(letter)
+    newAvailLetters = ''.join(multLetters)
+    import string
+    newAvailLetters = newAvailLetters.lower()
+    return(newAvailLetters)

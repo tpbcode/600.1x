@@ -1,0 +1,44 @@
+#Test Case 1:
+#balance = 320000
+#annualInterestRate = 0.2
+
+vBalance = balance
+month = 12
+monthlyInterestRate = annualInterestRate/12
+low = vBalance/12
+high = (vBalance*(1 + monthlyInterestRate)**12) /12
+epsilon = 0.001
+monthlyPaymentRate = balance/2
+counter = 1
+ans=1
+
+while abs(vBalance) >= epsilon:
+    ansTest = ans
+    ans = (high+low)/2
+    monthlyPaymentRate = ans
+    
+    ######Break infinite correct loop
+    if ansTest == ans:
+        counter = counter+1
+        if counter == 50:
+            break
+    ####Break Complete
+    if ansTest != ans:
+        counter = 1
+    if month > 0:
+        vBalance = vBalance - monthlyPaymentRate
+        vBalance = vBalance + ((annualInterestRate/12) * vBalance)
+        month-=1
+    if month == 0:
+        #print('low = ' + str(low) + ' high = ' + str(high) + ' ans = ' + str(ans)) 
+        if vBalance < 0:
+            high = ans
+        if vBalance > 0:
+            low = ans
+        vBalance = balance
+        month = 12        
+
+    elif month == 0 and vBalance == 0:
+        break
+
+print('Lowest Payment: ' + str(round(monthlyPaymentRate, 2)))

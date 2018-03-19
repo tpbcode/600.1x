@@ -1,0 +1,4 @@
+def decrypt_story():
+    cryptedStory = get_story_string()
+    decriptStry = CiphertextMessage(cryptedStory)
+    return(decriptStry.decrypt_message())

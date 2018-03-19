@@ -1,0 +1,81 @@
+def hangman(secretWord):
+    '''
+    secretWord: string, the secret word to guess.
+
+    Starts up an interactive game of Hangman.
+
+    * At the start of the game, let the user know how many 
+      letters the secretWord contains.
+
+    * Ask the user to supply one guess (i.e. letter) per round.
+
+    * The user should receive feedback immediately after each guess 
+      about whether their guess appears in the computers word.
+
+    * After each round, you should also display to the user the 
+      partially guessed word so far, as well as letters that the 
+      user has not yet guessed.
+
+    Follows the other limitations detailed in the problem write-up.
+    '''
+    #Setup some variables to use
+    length = len(secretWord)
+    print('Welcome to the game Hangman!')
+    print('I am thinking of a word that is',  length, 'letters long')
+    print('-----------')
+    guesses = 8
+    lettersGuessed = []
+    done = False
+    checkHistory = False
+    oldLettersGuessed = lettersGuessed[:]
+    
+    #Loop for the code block
+    while done == False:
+        print('You have', guesses, 'guesses left')
+        print('Available Letters:', getAvailableLetters(lettersGuessed))
+        l = str(input('Please guess a letter: '))
+        l = l.lower()
+
+        #Boolean to see if letter has been guessed before.  If it has, then True.  If it has not, then False.
+        if l in lettersGuessed:
+            checkHistory = True
+        else:
+            checkHistory = False
+            
+        #Updating/Appending letters guessed for loop and updating letters left to guess from(available) for loop as well.  
+        lettersGuessed.append(l)
+        availableLetters = getAvailableLetters(lettersGuessed)
+        
+        #wrong guess decrease number of guesses
+        if l not in secretWord and l in lettersGuessed and checkHistory == False:
+            guesses -= 1
+            
+            
+        #Game still going 3 different results
+        if l in secretWord and done == False and l not in oldLettersGuessed:
+            temp = getGuessedWord(secretWord, lettersGuessed)
+            print('Good guess:', temp)
+            print('-----------')
+        elif done == False and l in oldLettersGuessed:
+            temp = getGuessedWord(secretWord, lettersGuessed)
+            print("Oops! You've already guessed that letter:", temp)
+            print('-----------')
+        elif l not in secretWord and done == False:
+            temp = getGuessedWord(secretWord, lettersGuessed)
+            print('Oops! That letter is not in my word:', temp)
+            print('-----------')
+        
+        #update condition oldLettersGuessed so now it's equal to lettersGuessed to restart loop
+        oldLettersGuessed.append(l)
+        
+        #End Game
+        if guesses <= 0 and isWordGuessed(secretWord, lettersGuessed) == False:
+            list = [secretWord, '.']
+            newEnd = ''.join(list)
+            print('Sorry, you ran out of guesses. The word was',newEnd)
+            print('None')
+            done = True
+        if isWordGuessed(secretWord, lettersGuessed) == True:
+            print('Congratulations, you won!')
+            print('None')
+            done = True

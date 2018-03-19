@@ -1,0 +1,12 @@
+#Test Case 1:
+balance = 42
+annualInterestRate = 0.2
+monthlyPaymentRate = 0.04
+
+month = 12
+while month > 0:
+    minPay = monthlyPaymentRate * balance
+    balance = balance - minPay
+    balance = balance + ((annualInterestRate/12) * balance)
+    month-=1
+print('Remaining balance: ' + str(round(balance,2)))

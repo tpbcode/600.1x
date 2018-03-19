@@ -1,0 +1,217 @@
+def closest_power(base, num): 
+     ''' 
+     base: base of the exponential, integer > 1 
+     num: number you want to be closest to, integer > 0 
+     Find the integer exponent such that base**exponent is closest to num. 
+     Note that the base**exponent may be either greater or smaller than num. 
+     In case of a tie, return the smaller value. 
+     Returns the exponent. 
+     '''
+     counter = 0
+     while True:
+        if base == num:
+            return(counter)
+        if base**(counter+1) >= num:
+            return(counter)
+        if base**counter <= num:
+            counter += 1
+   
+#closest_power(3,12)
+
+##################################################
+def dotProduct(listA, listB): 
+     ''' 
+#     listA: a list of numbers 
+#     listB: a list of numbers of the same length as listA 
+     ''' 
+     c = 0
+     length = len(listA)
+     
+     for i in range(length):
+         c += listA[i]*listB[i]
+     return(c)
+
+
+    
+#listA = [1, 2, 3]
+#listB = [4, 5, 6]        
+#dotProduct(listA, listB)         
+         
+#######################################################
+
+def deep_reverse(L): 
+    gather = []
+    L.reverse()
+    for i in range(len(L)):
+        list = L[i]
+        list.reverse()
+        gather.append(list)
+
+    return(gather)
+
+#
+#L = [[1, 2], [3, 4], [5, 6, 7]]
+#deep_reverse(L)
+########################################################
+
+
+def dict_interdiff(d1, d2):
+    '''
+    d1, d2: dicts whose keys and values are integers
+    Returns a tuple of dictionaries according to the instructions above
+    '''
+    intersect = {}
+    difference = {}
+    gd = {}
+    ld = {}
+    tup = ()
+    allKeys = {}
+
+    #Set gd to be biggest dictionary and ld to be smallest    
+    if len(d1.keys()) > len(d2.keys()):
+        gd = d1
+        ld = d2
+    else: 
+        gd = d2
+        ld = d1
+        
+    #Get all keys into a dictionary
+    for i in gd.keys():
+        allKeys[i] = gd[i]
+    for i in ld.keys():
+        allKeys[i] = ld[i]
+   
+    #Loop capture intersect and difference    
+    for i in allKeys.keys():
+        if i in ld.keys() and i in gd.keys():
+            intersect[i] = (gd[i] + ld[i])
+            print(intersect)
+        elif i not in ld.keys():
+            difference[i] = gd[i]
+        else:
+            difference[i] = ld[i]
+            
+    tup = (intersect, difference)
+    return(tup)
+    
+#d1 = {1:30, 2:20, 3:30, 5:80} 
+#d2 = {1:40, 2:50, 3:60, 4:70, 6:90} 
+#
+#dict_interdiff(d1, d2)          
+########################################################        
+def applyF_filterG(L, f, g):
+    newList = L[:]
+    callList =[]
+    for i in newList:
+        if g(f(i)) == True:
+            for i in newList:
+                callList = (max(newList))
+        else:
+            L.remove(i)
+    if len(L) > 0:
+        return(callList)
+    else:
+        return(-1)
+
+    
+
+#def f(i):
+#    return i + 2
+#def g(i):
+#    return i > 5
+#    
+#L = [0, -10, 5, 6, -4]
+#print(applyF_filterG(L, f, g))
+#print(L)
+###########################################################
+
+def flatten(aList): 
+    newList = [] 
+    for item in aList: 
+        if type(item) != type([]): 
+            newList.append(item) 
+        else: 
+            newList.extend(flatten(item)) 
+    return newList      
+            
+#flatten([[1,'a',['cat'],2],[[[3]],'dog'],4,5])   
+
+
+
+###version 2
+def flatten(aList): 
+    newList = []
+    for item in aList:
+        if type(item) == list:
+            newList += flatten(item)
+        else:
+            newList.append(item)
+    return(newList)
+
+#flatten([[1,'a',['cat'],2],[[[3]],'dog'],4,5])   
+
+#########################################################     
+
+def keysWithValue(aDict, target):
+    aList = []
+    keysInList = list(aDict)
+    for key,val in aDict.items():
+        if val == target:
+            aList.append(key)
+    if len(aList)>1:
+        if aList[0] > aList[1]:
+            aList.sort()
+    return(aList)      
+    
+
+#aDict = {1: 'Zara', 2: 7, 3: 'First', 4: 'T', 5: 'T', 6: 'Hello'}    
+#keysWithValue(aDict, 'T')
+
+
+####################################################
+
+
+def gcd(a, b):
+    """
+    a, b: two positive integers
+    Returns the greatest common divisor of a and b
+    """
+    if a < b:
+        (a, b) = (b, a)
+    if b == 0:
+        return(a)
+    else:
+        return(gcd(b, a % b))
+    
+  
+#gcd(4, 16)
+
+
+#####################################################
+
+
+def satisfiesF(L):
+    """
+    Assumes L is a list of strings
+    Assume function f is already defined for you and it maps a string to a Boolean
+    Mutates L such that it contains all of the strings, s, originally in L such
+            that f(s) returns True, and no other elements. Remaining elements in L
+            should be in the same order.
+    Returns the length of L after mutation
+    """
+    counter = 0
+    for s in L[:]:
+        if f(s) == True:
+            counter += 1
+        else:
+            L.remove(s)
+    return(len(L))
+
+
+#L = ['a', 'b', 'a', 'a', 'a', 'm', 'a']
+#
+#print(satisfiesF(L))
+#print(L)
+
+
+

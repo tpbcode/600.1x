@@ -1,0 +1,26 @@
+#Test Case 1:
+#balance = 3329
+#annualInterestRate = 0.2
+
+vBalance = balance
+month = 12
+monthlyPaymentRate = 0
+
+while True:
+    if month > 0:
+        vBalance = vBalance - monthlyPaymentRate
+        vBalance = vBalance + ((annualInterestRate/12) * vBalance)
+        month-=1
+
+    elif month == 0 and vBalance <= 0:
+        break
+
+    elif month == 0:
+        if vBalance > 0:
+            monthlyPaymentRate += 10
+#reset values
+        vBalance = balance
+        month = 12
+
+    #print('Month 1 Remaining balance:' + str(balance))
+print('Lowest Payment: ' + str(monthlyPaymentRate))
