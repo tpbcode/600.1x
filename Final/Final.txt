@@ -1,0 +1,412 @@
+#Problem 3 
+# 10/10 points (graded) 
+# Numbers in Mandarin follow 3 simple rules. 
+
+ 
+# There are words for each of the digits from 0 to 10. 
+# For numbers 11-19, the number is pronounced as "ten digit", so for example, 16 would be pronounced (using Mandarin) as "ten six". 
+# For numbers between 20 and 99, the number is pronounced as “digit ten digit”, so for example, 37 would be pronounced (using Mandarin) as 
+# "three ten seven". If the digit is a zero, it is not included. 
+# Here is a simple Python dictionary that captures the numbers between 0 and 10. 
+trans = {'0':'ling', '1':'yi', '2':'er', '3':'san', '4': 'si', '5':'wu', '6':'liu', '7':'qi', '8':'ba', '9':'jiu', '10': 'shi'} 
+ 
+ 
+# We want to write a procedure that converts an American number (between 0 and 99), written as a string, into the equivalent Mandarin. 
+ 
+ 
+# Example Usage 
+# convert_to_mandarin('36') will return san shi liu 
+# convert_to_mandarin('20') will return er shi 
+# convert_to_mandarin('16') will return shi liu 
+
+ 
+# Paste your function here 
+def convert_to_mandarin(number):
+    num = int(number)
+    base =  num // 10
+    newNum = num % 10
+    if num < 11:
+            return trans[number]
+    elif num > 10 and num <20:
+        return trans['10'] + ' ' + trans[str(newNum)]
+    elif num > 19 and newNum == 0:
+        return trans[str(base)] +' ' + trans['10']
+    else:
+        return trans[str(base)] +' ' + trans['10'] + ' ' + trans[str(newNum)]
+
+#
+#convert_to_mandarin('36')    
+##will return san shi liu 
+#convert_to_mandarin('20') 
+##will return er shi 
+#convert_to_mandarin('16') 
+##will return shi liu 
+#
+#convert_to_mandarin('71') 
+
+
+
+##################################################################################
+
+
+
+#Problem 4 
+# 20.0/20.0 points (graded) 
+# You are given the following definitions: 
+# A run of monotonically increasing numbers means that a number at position k+1 in the sequence is greater than or equal to the number at 
+# position k in the sequence. 
+# A run of monotonically decreasing numbers means that a number at position k+1 in the sequence is less than or equal to the number at 
+# position k in the sequence. 
+# Implement a function that meets the specifications below. 
+ 
+ 
+# For example: 
+# If L = [10, 4, 3, 8, 3, 4, 5, 7, 7, 2] then the longest run of monotonically increasing numbers in L is [3, 4, 5, 7, 7] and the longest 
+# run of monotonically decreasing numbers in L is [10, 4, 3]. Your function should return the value 26 because the longest run of 
+# monotonically increasing integers is longer than the longest run of monotonically decreasing numbers. 
+# If L = [5, 4, 10] then the longest run of monotonically increasing numbers in L is [4, 10] and the longest run of monotonically 
+# decreasing numbers in L is [5, 4]. Your function should return the value 9 because the longest run of monotonically decreasing integers 
+# occurs before the longest run of monotonically increasing numbers. 
+def longest_run(L): 
+    
+    incL = []
+    decL = []
+    newIncL = []
+    newDecL = []
+    count1 = 0
+    count2 = 0
+    for i in range(len(L)-1):
+        if L[i] >= L[i+1]:
+            decL.append(L[i])
+            count2 += 1
+            count1 = 0
+            if count2 ==1 and L[i] > L[i-1]:
+                incL.append(L[i])
+            if len(newIncL) < len(incL):
+                newIncL = incL[:]
+        if L[i] <= L[i+1]:
+            incL.append(L[i])
+            count1 += 1
+            count2 = 0
+            if count1 == 1 and L[i] < L[i-1]:
+                decL.append(L[i])
+            if len(newDecL) < len(decL):
+                newDecL = decL[:]
+        if L[i] < L[i+1]:
+            decL = []
+        if L[i] > L[i+1]:
+            incL = []
+            
+    if len(newDecL) > len(newIncL):
+        return sum(newDecL)
+    else:
+        return sum(newIncL)
+            
+            
+#L = [10, 4, 3, 8, 3, 4, 5, 7, 7, 2]
+#L = [5, 4, 10]
+#L = [5, 4]
+#longest_run(L)  
+
+
+
+################################################################################
+
+
+# Problem 5 
+# 15.0/15.0 points (graded) 
+# In this problem, you will implement a class according to the specifications in the template file usresident.py. The file contains a 
+# Person class similar to what you have seen in lecture and a USResident class (a subclass of Person). Person is already implemented for 
+# you and you will have to implement two methods of USResident. 
+
+ 
+# For example, the following code: 
+# a = USResident('Tim Beaver', 'citizen') 
+# print(a.getStatus()) 
+# b = USResident('Tim Horton', 'non-resident') 
+
+
+# will print out: 
+# citizen 
+# ## will show that a ValueError was raised at a particular line 
+
+ 
+## DO NOT MODIFY THE IMPLEMENTATION OF THE Person CLASS ## 
+class Person(object): 
+    def __init__(self, name): 
+        #create a person with name name 
+        self.name = name 
+        try: 
+            firstBlank = name.rindex(' ') 
+            self.lastName = name[firstBlank+1:] 
+        except: 
+            self.lastName = name 
+        self.age = None 
+    def getLastName(self): 
+        #return self's last name 
+        return self.lastName 
+    def setAge(self, age): 
+        #assumes age is an int greater than 0 
+        #sets self's age to age (in years) 
+        self.age = age 
+    def getAge(self): 
+        #assumes that self's age has been set 
+        #returns self's current age in years 
+        if self.age == None: 
+            raise ValueError 
+        return self.age 
+    def __lt__(self, other): 
+        #return True if self's name is lexicographically less 
+        #than other's name, and False otherwise 
+        if self.lastName == other.lastName: 
+            return self.name < other.name 
+        return self.lastName < other.lastName 
+    def __str__(self): 
+        #return self's name 
+        return self.name 
+         
+class USResident(Person): 
+    """  
+    A Person who resides in the US. 
+    """ 
+    def __init__(self, name, status): 
+        """  
+        Initializes a Person object. A USResident object inherits  
+        from Person and has one additional attribute: 
+        status: a string, one of "citizen", "legal_resident", "illegal_resident" 
+        Raises a ValueError if status is not one of those 3 strings 
+        """ 
+        self.name = name
+        if status == "citizen" or status == "legal_resident" or status == "illegal_resident":
+            self.status = status
+        else:
+            raise ValueError
+         
+    def getStatus(self): 
+        """ 
+        Returns the status 
+        """ 
+        return self.status
+         
+# For this question, you will not be able to see the test cases we run. This problem will test your ability to come up with your own 
+# test cases. 
+
+#a = USResident('Tim Beaver', 'legal_resident') 
+#print(a.getStatus()) 
+#b = USResident('Tim Horton', 'non-resident') 
+#print(b.getStatus())  # this should raise Value Error as there is no 'non-resident' status defined
+
+
+
+
+###############################################################################
+
+
+
+
+# Problem 6-1 
+# 10.0/10.0 points (graded) 
+# This question has 3 parts 
+
+ 
+# Consider the following hierarchy of classes: 
+
+ 
+class Person(object):      
+    def __init__(self, name):          
+        self.name = name      
+    def say(self, stuff):          
+        return self.name + ' says: ' + stuff      
+    def __str__(self):          
+        return self.name   
+
+ 
+class Lecturer(Person):      
+    def lecture(self, stuff):          
+        return 'I believe that ' + Person.say(self, stuff)   
+
+
+class Professor(Lecturer):  
+    def say(self, stuff):  
+        return self.name + ' says: ' + self.lecture(stuff) 
+
+class ArrogantProfessor(Professor):  
+    def say(self, stuff):  
+        return self.name + ' says: ' + 'It is obvious that ' + Person.say(self, stuff) 
+    def lecture(self, stuff):
+        return  'It is obvious that ' + Person.say(self, stuff)
+         
+# As written, this code leads to an infinite loop when using the Arrogant Professor class. 
+
+
+# Change the definition of ArrogantProfessor so that the following behavior is achieved: 
+
+
+e = Person('eric')  
+le = Lecturer('eric')  
+pe = Professor('eric')  
+ae = ArrogantProfessor('eric') 
+
+ 
+#e.say('the sky is blue') 
+# eric says: the sky is blue 
+
+ 
+#le.say('the sky is blue') 
+# eric says: the sky is blue 
+
+
+ 
+#le.lecture('the sky is blue') 
+# I believe that eric says: the sky is blue 
+
+ 
+#pe.say('the sky is blue') 
+# eric says: I believe that eric says: the sky is blue 
+
+ 
+#pe.lecture('the sky is blue') 
+# I believe that eric says: the sky is blue 
+
+ 
+#ae.say('the sky is blue') 
+# eric says: It is obvious that eric says: the sky is blue 
+
+ 
+#ae.lecture('the sky is blue') 
+# It is obvious that eric says: the sky is blue 
+
+# For this question, you will not be able to see the test cases we run. This problem will test your ability to come up with your own 
+# test cases. 
+
+
+
+
+#################################################################################
+
+
+
+
+# Problem 6-2 
+# 10.0/10.0 points (graded) 
+# You change your mind, and now want the behavior as described in Part 1, except that you want: 
+
+ 
+#ae.say('the sky is blue') 
+#eric says: It is obvious that I believe that eric says: the sky is blue 
+
+ 
+#ae.lecture('the sky is blue') 
+#It is obvious that I believe that eric says: the sky is blue 
+
+ 
+# Change the definition of ArrogantProfessor so that the behavior described above is achieved. 
+
+ 
+# Paste ONLY your ArrogantProfessor class in the box below. Do not leave any debugging print statements. 
+
+ 
+# For this question, you will not be able to see the test cases we run. This problem will test your ability to come up with your own test 
+# cases. 
+
+class ArrogantProfessor(Professor):  
+    def say(self, stuff):  
+        return self.name + ' says: ' + 'It is obvious that I believe that ' + Person.say(self, stuff) 
+    def lecture(self, stuff):
+        return  'It is obvious that I believe that ' + Person.say(self, stuff)
+    
+    
+    
+################################################################################
+
+
+
+# Problem 6-3 
+# 15.0/15.0 points (graded) 
+# You change your mind once more. You want to keep the behavior from Part 2, but now you would like: 
+
+ 
+#pe.say('the sky is blue') 
+# Prof. eric says: I believe that eric says: the sky is blue  
+
+ 
+#ae.say('the sky is blue') 
+# Prof. eric says: It is obvious that I believe that eric says: the sky is blue  
+
+ 
+# Change the Professor class definition in order to achieve this. You may have to modify your implmentation for a previous part to get 
+# this to work. 
+
+ 
+# Paste ONLY the Professor class in the box below. Do not leave any debugging print statements. 
+
+ 
+# For this question, you will not be able to see the test cases we run. This problem will test your ability to come up with your own test 
+# cases. 
+
+class Professor(Lecturer):  
+    def say(self, stuff):  
+        return 'Prof. ' + self.name + ' says: ' + self.lecture(stuff) 
+
+
+#class ArrogantProfessor(Professor):  
+#    def say(self, stuff):  
+#        return 'Prof. ' + self.name + ' says: ' + 'It is obvious that I believe that ' + Person.say(self, stuff) 
+#    def lecture(self, stuff):
+#        return  'It is obvious that I believe that ' + Person.say(self, stuff)
+
+
+
+################################################################################
+
+
+
+# Problem 7 
+# 20.0/20.0 points (graded) 
+# Write a function called general_poly, that meets the specifications below. 
+
+ 
+# For example, general_poly([1, 2, 3, 4])(10) should evaluate to 1234 because  
+# 1 * 10^3 + 2 * 10^2 + 3 * 10^1 + 4 * 10^0 
+ 
+ 
+# So in the example the function only takes one argument with general_poly([1, 2, 3, 4]) and it returns a function that you can apply to a 
+#value, in this case x = 10 with general_poly([1, 2, 3, 4])(10). 
+
+
+# Paste your code here 
+
+def general_poly(L):
+    length = len(L)-1
+    newL = 0
+    sum = 0
+    for i in range(len(L)):
+        newL = (length-i)
+        sum += (L[i]*(10**newL))
+    return(sum)
+     
+L = [1, 2, 3, 4]
+general_poly(L)
+
+
+L = [0, 8, 0, 1]
+general_poly(L)
+
+
+#######just for fun - to make shorter###########
+
+
+def general_poly(L):
+    length = len(L)-1
+    sum = 0
+    for i in range(len(L)):
+        sum += (L[i]*(10**(length-i)))
+    return(sum)
+
+
+L = [1, 2, 3, 4]
+general_poly(L)
+
+
+L = [0, 8, 0, 1]
+general_poly(L)
