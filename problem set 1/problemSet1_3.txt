@@ -1,0 +1,29 @@
+#s = 'azcbobobegghakl'
+times = len(s)
+count = 0
+start=0
+absoluteStart = 0
+firstLetter = -1
+specTest = 0
+substring1 = ""
+substring2 = s[0]
+for step in range(times):
+    if count == times-1 or count == times:
+        if len(substring2) == times-1:
+            if s[-1] > s[-2]:
+                substring2 = s
+        break
+    start = step
+    count = start+1
+    while s[start] <= s[count]:
+        if s[start] <= s[count]:
+            count+=1
+            start+=1
+            substring1 = s[step:count]
+        if count == times-1 or count == times:
+            if s[-1] > s[-2]:
+                substring1 = s[step:]
+            break
+    if len(substring2) < len(substring1):
+        substring2 = substring1
+print('Longest substring in alphabetical order is:' + substring2)
